@@ -41,27 +41,27 @@ jobs:
     - name: Test binary execution
       run: |
         # Test that the binary starts successfully
-        echo "Testing happy --help..."
-        timeout 30s happy --help || {
-          echo "Error: happy --help failed or timed out"
+        echo "Testing dora --help..."
+        timeout 30s dora --help || {
+          echo "Error: dora --help failed or timed out"
           exit 1
         }
         
-        echo "Testing happy --version..."
-        timeout 10s happy --version || {
-          echo "Error: happy --version failed or timed out"
+        echo "Testing dora --version..."
+        timeout 10s dora --version || {
+          echo "Error: dora --version failed or timed out"
           exit 1
         }
         
-        echo "Testing happy doctor..."
-        timeout 30s happy doctor || {
-          echo "Error: happy doctor failed or timed out"
+        echo "Testing dora doctor..."
+        timeout 30s dora doctor || {
+          echo "Error: dora doctor failed or timed out"
           exit 1
         }
         
-        echo "Testing happy daemon status..."
-        timeout 10s happy daemon status || {
-          echo "Error: happy daemon status failed or timed out"
+        echo "Testing dora daemon status..."
+        timeout 10s dora daemon status || {
+          echo "Error: dora daemon status failed or timed out"
           exit 1
         }
         
@@ -110,20 +110,20 @@ jobs:
           echo Found node_modules directory
           dir "%NPM_PREFIX%\node_modules" 2>nul
           echo.
-          echo Checking for happy-coder package:
-          if exist "%NPM_PREFIX%\node_modules\happy-coder" (
-            echo Found happy-coder package
-            dir "%NPM_PREFIX%\node_modules\happy-coder" 2>nul
+          echo Checking for dora-coder package:
+          if exist "%NPM_PREFIX%\node_modules\dora-coder" (
+            echo Found dora-coder package
+            dir "%NPM_PREFIX%\node_modules\dora-coder" 2>nul
             echo.
             echo Checking for dist directory:
-            if exist "%NPM_PREFIX%\node_modules\happy-coder\dist" (
+            if exist "%NPM_PREFIX%\node_modules\dora-coder\dist" (
               echo Found dist directory
-              dir "%NPM_PREFIX%\node_modules\happy-coder\dist" 2>nul
+              dir "%NPM_PREFIX%\node_modules\dora-coder\dist" 2>nul
             ) else (
               echo No dist directory found
             )
           ) else (
-            echo No happy-coder package found
+            echo No dora-coder package found
           )
         ) else (
           echo No node_modules directory found
@@ -140,67 +140,67 @@ jobs:
         echo NPM_PREFIX: %NPM_PREFIX%
         echo Current PATH: %PATH%
         
-        rem Debug: Check if happy exists in various locations
-        echo Checking for happy binary...
-        where happy 2>nul && echo Found happy in PATH || echo happy not found in PATH
-        if exist "%NPM_PREFIX%\happy.cmd" echo Found happy.cmd in NPM_PREFIX
-        if exist "%NPM_PREFIX%\node_modules\.bin\happy.cmd" echo Found happy.cmd in .bin directory
-        dir "%NPM_PREFIX%\*happy*" 2>nul || echo No happy files found in NPM_PREFIX
+        rem Debug: Check if dora exists in various locations
+        echo Checking for dora binary...
+        where dora 2>nul && echo Found dora in PATH || echo dora not found in PATH
+        if exist "%NPM_PREFIX%\dora.cmd" echo Found dora.cmd in NPM_PREFIX
+        if exist "%NPM_PREFIX%\node_modules\.bin\dora.cmd" echo Found dora.cmd in .bin directory
+        dir "%NPM_PREFIX%\*dora*" 2>nul || echo No dora files found in NPM_PREFIX
         
         rem Debug: Check the actual contents and encoding of the installed file
-        if exist "%NPM_PREFIX%\happy.cmd" (
+        if exist "%NPM_PREFIX%\dora.cmd" (
           echo File size and type:
-          dir "%NPM_PREFIX%\happy.cmd"
+          dir "%NPM_PREFIX%\dora.cmd"
           echo.
           echo First few lines of the file:
-          type "%NPM_PREFIX%\happy.cmd" | head -5
+          type "%NPM_PREFIX%\dora.cmd" | head -5
           echo.
           echo Hex dump of first 50 bytes to check line endings:
-          powershell -Command "Get-Content '%NPM_PREFIX%\happy.cmd' -Encoding Byte -TotalCount 50 | ForEach-Object { '{0:X2}' -f $_ } | Join-String -Separator ' '"
+          powershell -Command "Get-Content '%NPM_PREFIX%\dora.cmd' -Encoding Byte -TotalCount 50 | ForEach-Object { '{0:X2}' -f $_ } | Join-String -Separator ' '"
           echo.
           echo Testing with direct path...
-          "%NPM_PREFIX%\happy.cmd" --help
+          "%NPM_PREFIX%\dora.cmd" --help
         ) else (
-          echo Testing happy --help...
-          happy --help
+          echo Testing dora --help...
+          dora --help
         )
         if errorlevel 1 (
-          echo Error: happy --help failed
+          echo Error: dora --help failed
           exit /b 1
         )
         
         rem Test version
-        if exist "%NPM_PREFIX%\happy.cmd" (
-          "%NPM_PREFIX%\happy.cmd" --version
+        if exist "%NPM_PREFIX%\dora.cmd" (
+          "%NPM_PREFIX%\dora.cmd" --version
         ) else (
-          happy --version
+          dora --version
         )
         if errorlevel 1 (
-          echo Error: happy --version failed
+          echo Error: dora --version failed
           exit /b 1
         )
         
         rem Test doctor
-        echo Testing happy doctor...
-        if exist "%NPM_PREFIX%\happy.cmd" (
-          "%NPM_PREFIX%\happy.cmd" doctor
+        echo Testing dora doctor...
+        if exist "%NPM_PREFIX%\dora.cmd" (
+          "%NPM_PREFIX%\dora.cmd" doctor
         ) else (
-          happy doctor
+          dora doctor
         )
         if errorlevel 1 (
-          echo Error: happy doctor failed
+          echo Error: dora doctor failed
           exit /b 1
         )
         
         rem Test daemon status
-        echo Testing happy daemon status...
-        if exist "%NPM_PREFIX%\happy.cmd" (
-          "%NPM_PREFIX%\happy.cmd" daemon status
+        echo Testing dora daemon status...
+        if exist "%NPM_PREFIX%\dora.cmd" (
+          "%NPM_PREFIX%\dora.cmd" daemon status
         ) else (
-          happy daemon status
+          dora daemon status
         )
         if errorlevel 1 (
-          echo Error: happy daemon status failed
+          echo Error: dora daemon status failed
           exit /b 1
         )
         

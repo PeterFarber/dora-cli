@@ -10,7 +10,7 @@
  * and the daemon will not work properly!
  * 
  * The integration test environment uses .env.integration-test which sets:
- * - HAPPY_HOME_DIR=~/.happy-dev-test (DIFFERENT from dev's ~/.happy-dev!)
+ * - HAPPY_HOME_DIR=~/.dora-dev-test (DIFFERENT from dev's ~/.dora-dev!)
  * - HAPPY_SERVER_URL=http://localhost:3005 (local dev server)
  */
 
@@ -62,7 +62,7 @@ async function isServerHealthy(): Promise<boolean> {
     const testCredentials = existsSync(join(configuration.happyHomeDir, 'access.key'));
     if (!testCredentials) {
       console.log('[TEST] No test credentials found in', configuration.happyHomeDir);
-      console.log('[TEST] Run "happy auth login" with HAPPY_HOME_DIR=~/.happy-dev-test first');
+      console.log('[TEST] Run "dora auth login" with HAPPY_HOME_DIR=~/.dora-dev-test first');
       return false;
     }
     
@@ -117,9 +117,9 @@ describe.skipIf(!await isServerHealthy())('Daemon Integration Tests', { timeout:
       path: '/test/path',
       host: 'test-host',
       homeDir: '/test/home',
-      happyHomeDir: '/test/happy-home',
-      happyLibDir: '/test/happy-lib',
-      happyToolsDir: '/test/happy-tools',
+      happyHomeDir: '/test/dora-home',
+      happyLibDir: '/test/dora-lib',
+      happyToolsDir: '/test/dora-tools',
       hostPid: 99999,
       startedBy: 'terminal',
       machineId: 'test-machine-123'
@@ -132,7 +132,7 @@ describe.skipIf(!await isServerHealthy())('Daemon Integration Tests', { timeout:
     expect(sessions).toHaveLength(1);
     
     const tracked = sessions[0];
-    expect(tracked.startedBy).toBe('happy directly - likely by user from terminal');
+    expect(tracked.startedBy).toBe('dora directly - likely by user from terminal');
     expect(tracked.happySessionId).toBe('test-session-123');
     expect(tracked.pid).toBe(99999);
   });
@@ -188,9 +188,9 @@ describe.skipIf(!await isServerHealthy())('Daemon Integration Tests', { timeout:
   });
 
   it('should track both daemon-spawned and terminal sessions', async () => {
-    // Spawn a real happy process that looks like it was started from terminal
+    // Spawn a real dora process that looks like it was started from terminal
     const terminalHappyProcess = spawnHappyCLI([
-      '--happy-starting-mode', 'remote',
+      '--dora-starting-mode', 'remote',
       '--started-by', 'terminal'
     ], {
       cwd: '/tmp',
@@ -198,7 +198,7 @@ describe.skipIf(!await isServerHealthy())('Daemon Integration Tests', { timeout:
       stdio: 'ignore'
     });
     if (!terminalHappyProcess || !terminalHappyProcess.pid) {
-      throw new Error('Failed to spawn terminal happy process');
+      throw new Error('Failed to spawn terminal dora process');
     }
     // Give time to start & report itself
     await new Promise(resolve => setTimeout(resolve, 5_000));
@@ -219,7 +219,7 @@ describe.skipIf(!await isServerHealthy())('Daemon Integration Tests', { timeout:
     );
 
     expect(terminalSession).toBeDefined();
-    expect(terminalSession.startedBy).toBe('happy directly - likely by user from terminal');
+    expect(terminalSession.startedBy).toBe('dora directly - likely by user from terminal');
     
     expect(daemonSession).toBeDefined();
     expect(daemonSession.startedBy).toBe('daemon');
@@ -393,9 +393,9 @@ describe.skipIf(!await isServerHealthy())('Daemon Integration Tests', { timeout:
    * 7. New daemon starts, reads daemon.state.json, sees old version != its compiled version
    * 8. New daemon calls stopDaemon() to kill old daemon, then takes over
    * 
-   * This simulates what happens during `npm upgrade happy-coder`:
+   * This simulates what happens during `npm upgrade dora-coder`:
    * - Running daemon has OLD version loaded in memory (configuration.currentCliVersion)
-   * - npm replaces node_modules/happy-coder/ with NEW version files
+   * - npm replaces node_modules/dora-coder/ with NEW version files
    * - package.json on disk now has NEW version
    * - Daemon reads package.json, detects mismatch, triggers self-update
    * - Key difference: npm atomically replaces the entire module directory, while
@@ -437,7 +437,7 @@ describe.skipIf(!await isServerHealthy())('Daemon Integration Tests', { timeout:
       // and think it is a new version
       // We are not using yarn build here because it cleans out dist/
       // and we want to avoid that, 
-      // otherwise daemon will spawn a non existing happy js script.
+      // otherwise daemon will spawn a non existing dora js script.
       // We need to remove index, but not the other files, otherwise some of our code might fail when called from within the daemon.
       execSync('yarn build', { stdio: 'ignore' });
       
@@ -467,7 +467,7 @@ describe.skipIf(!await isServerHealthy())('Daemon Integration Tests', { timeout:
 
   // TODO: Add a test to see if a corrupted file will work
   
-  // TODO: Test npm uninstall scenario - daemon should gracefully handle when happy-coder is uninstalled
+  // TODO: Test npm uninstall scenario - daemon should gracefully handle when dora-coder is uninstalled
   // Current behavior: daemon tries to spawn new daemon on version mismatch but dist/index.mjs is gone
   // Expected: daemon should detect missing entrypoint and either exit cleanly or at minimum not respawn infinitely
 });

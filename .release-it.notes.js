@@ -41,7 +41,7 @@ async function generateReleaseNotes() {
         }
 
         // Create a prompt for Claude to analyze commits and generate release notes
-        const prompt = `Please analyze these git commits and generate professional release notes for version ${toVersion} of the Happy CLI tool (a Claude Code session sharing CLI).
+        const prompt = `Please analyze these git commits and generate professional release notes for version ${toVersion} of the Dora CLI tool (a Claude Code session sharing CLI).
 
 Git commits:
 ${gitLog}

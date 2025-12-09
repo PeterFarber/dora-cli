@@ -1,7 +1,7 @@
 /**
- * Minimal persistence functions for happy CLI
+ * Minimal persistence functions for dora CLI
  * 
- * Handles settings and private key storage in ~/.happy/ or local .happy/
+ * Handles settings and private key storage in ~/.dora/ or local .dora/
  */
 
 import { FileHandle } from 'node:fs/promises'

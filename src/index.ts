@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * CLI entry point for happy command
+ * CLI entry point for dora command
  * 
  * Simple argument parsing without any CLI framework dependencies
  */
@@ -35,7 +35,7 @@ import { execFileSync } from 'node:child_process'
 
   // If --version is passed - do not log, its likely daemon inquiring about our version
   if (!args.includes('--version')) {
-    logger.debug('Starting happy CLI with args: ', process.argv)
+    logger.debug('Starting dora CLI with args: ', process.argv)
   }
 
   // Check if first argument is a subcommand
@@ -105,7 +105,7 @@ import { execFileSync } from 'node:child_process'
     return;
   } else if (subcommand === 'logout') {
     // Keep for backward compatibility - redirect to auth logout
-    console.log(chalk.yellow('Note: "happy logout" is deprecated. Use "happy auth logout" instead.\n'));
+    console.log(chalk.yellow('Note: "dora logout" is deprecated. Use "dora auth logout" instead.\n'));
     try {
       await handleAuthCommand(['logout']);
     } catch (error) {
@@ -223,20 +223,20 @@ import { execFileSync } from 'node:child_process'
       }
     } else {
       console.log(`
-${chalk.bold('happy daemon')} - Daemon management
+${chalk.bold('dora daemon')} - Daemon management
 
 ${chalk.bold('Usage:')}
-  happy daemon start              Start the daemon (detached)
-  happy daemon stop               Stop the daemon (sessions stay alive)
-  happy daemon status             Show daemon status
-  happy daemon list               List active sessions
+  dora daemon start              Start the daemon (detached)
+  dora daemon stop               Stop the daemon (sessions stay alive)
+  dora daemon status             Show daemon status
+  dora daemon list               List active sessions
 
-  If you want to kill all happy related processes run 
-  ${chalk.cyan('happy doctor clean')}
+  If you want to kill all dora related processes run 
+  ${chalk.cyan('dora doctor clean')}
 
 ${chalk.bold('Note:')} The daemon runs in the background and manages Claude sessions.
 
-${chalk.bold('To clean up runaway processes:')} Use ${chalk.cyan('happy doctor clean')}
+${chalk.bold('To clean up runaway processes:')} Use ${chalk.cyan('dora doctor clean')}
 `)
     }
     return;
@@ -264,7 +264,7 @@ ${chalk.bold('To clean up runaway processes:')} Use ${chalk.cyan('happy doctor c
         showVersion = true
         // Also pass through to claude (will show after our version)
         unknownArgs.push(arg)
-      } else if (arg === '--happy-starting-mode') {
+      } else if (arg === '--dora-starting-mode') {
         options.startingMode = z.enum(['local', 'remote']).parse(args[++i])
       } else if (arg === '--yolo') {
         // Shortcut for --dangerously-skip-permissions
@@ -289,29 +289,29 @@ ${chalk.bold('To clean up runaway processes:')} Use ${chalk.cyan('happy doctor c
     // Show help
     if (showHelp) {
       console.log(`
-${chalk.bold('happy')} - Claude Code On the Go
+${chalk.bold('dora')} - Claude Code On the Go
 
 ${chalk.bold('Usage:')}
-  happy [options]         Start Claude with mobile control
-  happy auth              Manage authentication
-  happy codex             Start Codex mode
-  happy connect           Connect AI vendor API keys
-  happy notify            Send push notification
-  happy daemon            Manage background service that allows
+  dora [options]         Start Claude with mobile control
+  dora auth              Manage authentication
+  dora codex             Start Codex mode
+  dora connect           Connect AI vendor API keys
+  dora notify            Send push notification
+  dora daemon            Manage background service that allows
                             to spawn new sessions away from your computer
-  happy doctor            System diagnostics & troubleshooting
+  dora doctor            System diagnostics & troubleshooting
 
 ${chalk.bold('Examples:')}
-  happy                    Start session
-  happy --yolo             Start with bypassing permissions 
-                            happy sugar for --dangerously-skip-permissions
-  happy auth login --force Authenticate
-  happy doctor             Run diagnostics
+  dora                    Start session
+  dora --yolo             Start with bypassing permissions 
+                            dora sugar for --dangerously-skip-permissions
+  dora auth login --force Authenticate
+  dora doctor             Run diagnostics
 
-${chalk.bold('Happy supports ALL Claude options!')}
-  Use any claude flag with happy as you would with claude. Our favorite:
+${chalk.bold('Dora supports ALL Claude options!')}
+  Use any claude flag with dora as you would with claude. Our favorite:
 
-  happy --resume
+  dora --resume
 
 ${chalk.gray('─'.repeat(60))}
 ${chalk.bold.cyan('Claude Code Options (from `claude --help`):')}
@@ -331,7 +331,7 @@ ${chalk.bold.cyan('Claude Code Options (from `claude --help`):')}
 
     // Show version
     if (showVersion) {
-      console.log(`happy version: ${packageJson.version}`)
+      console.log(`dora version: ${packageJson.version}`)
       // Don't exit - continue to pass --version to Claude Code
     }
 
@@ -341,10 +341,10 @@ ${chalk.bold.cyan('Claude Code Options (from `claude --help`):')}
     } = await authAndSetupMachineIfNeeded();
 
     // Always auto-start daemon for simplicity
-    logger.debug('Ensuring Happy background service is running & matches our version...');
+    logger.debug('Ensuring Dora background service is running & matches our version...');
 
     if (!(await isDaemonRunningCurrentlyInstalledHappyVersion())) {
-      logger.debug('Starting Happy background service...');
+      logger.debug('Starting Dora background service...');
 
       // Use the built binary to spawn daemon
       const daemonProcess = spawnHappyCLI(['daemon', 'start-sync'], {
@@ -398,34 +398,34 @@ async function handleNotifyCommand(args: string[]): Promise<void> {
 
   if (showHelp) {
     console.log(`
-${chalk.bold('happy notify')} - Send notification
+${chalk.bold('dora notify')} - Send notification
 
 ${chalk.bold('Usage:')}
-  happy notify -p <message> [-t <title>]    Send notification with custom message and optional title
-  happy notify -h, --help                   Show this help
+  dora notify -p <message> [-t <title>]    Send notification with custom message and optional title
+  dora notify -h, --help                   Show this help
 
 ${chalk.bold('Options:')}
   -p <message>    Notification message (required)
-  -t <title>      Notification title (optional, defaults to "Happy")
+  -t <title>      Notification title (optional, defaults to "Dora")
 
 ${chalk.bold('Examples:')}
-  happy notify -p "Deployment complete!"
-  happy notify -p "System update complete" -t "Server Status"
-  happy notify -t "Alert" -p "Database connection restored"
+  dora notify -p "Deployment complete!"
+  dora notify -p "System update complete" -t "Server Status"
+  dora notify -t "Alert" -p "Database connection restored"
 `)
     return
   }
 
   if (!message) {
     console.error(chalk.red('Error: Message is required. Use -p "your message" to specify the notification text.'))
-    console.log(chalk.gray('Run "happy notify --help" for usage information.'))
+    console.log(chalk.gray('Run "dora notify --help" for usage information.'))
     process.exit(1)
   }
 
   // Load credentials
   let credentials = await readCredentials()
   if (!credentials) {
-    console.error(chalk.red('Error: Not authenticated. Please run "happy auth login" first.'))
+    console.error(chalk.red('Error: Not authenticated. Please run "dora auth login" first.'))
     process.exit(1)
   }
 
@@ -435,8 +435,8 @@ ${chalk.bold('Examples:')}
     // Create API client and send push notification
     const api = await ApiClient.create(credentials);
 
-    // Use custom title or default to "Happy"
-    const notificationTitle = title || 'Happy'
+    // Use custom title or default to "Dora"
+    const notificationTitle = title || 'Dora'
 
     // Send the push notification
     api.push().sendToAllDevices(

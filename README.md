@@ -1,4 +1,4 @@
-# Happy
+# Dora
 
 Code on the go controlling claude code from your mobile device.
 
@@ -7,13 +7,13 @@ Free. Open source. Code anywhere.
 ## Installation
 
 ```bash
-npm install -g happy-coder
+npm install -g dora-coder
 ```
 
 ## Usage
 
 ```bash
-happy
+dora
 ```
 
 This will:
@@ -23,12 +23,12 @@ This will:
 
 ## Commands
 
-- `happy auth` – Manage authentication
-- `happy codex` – Start Codex mode
-- `happy connect` – Store AI vendor API keys in Happy cloud
-- `happy notify` – Send a push notification to your devices
-- `happy daemon` – Manage background service
-- `happy doctor` – System diagnostics & troubleshooting
+- `dora auth` – Manage authentication
+- `dora codex` – Start Codex mode
+- `dora connect` – Store AI vendor API keys in Dora cloud
+- `dora notify` – Send a push notification to your devices
+- `dora daemon` – Manage background service
+- `dora doctor` – System diagnostics & troubleshooting
 
 ## Options
 
@@ -42,8 +42,8 @@ This will:
 ## Environment Variables
 
 - `HAPPY_SERVER_URL` - Custom server URL (default: https://api.cluster-fluster.com)
-- `HAPPY_WEBAPP_URL` - Custom web app URL (default: https://app.happy.engineering)
-- `HAPPY_HOME_DIR` - Custom home directory for Happy data (default: ~/.happy)
+- `HAPPY_WEBAPP_URL` - Custom web app URL (default: https://app.dora.engineering)
+- `HAPPY_HOME_DIR` - Custom home directory for Dora data (default: ~/.dora)
 - `HAPPY_DISABLE_CAFFEINATE` - Disable macOS sleep prevention (set to `true`, `1`, or `yes`)
 - `HAPPY_EXPERIMENTAL` - Enable experimental features (set to `true`, `1`, or `yes`)
 

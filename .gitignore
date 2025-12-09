@@ -22,7 +22,7 @@ pnpm-lock.yaml
 .claude/settings.local.json
 
 # Local installation
-.happy/
+.dora/
 
 **/*.log
 .release-notes-temp.md

@@ -1,5 +1,5 @@
 /**
- * Global configuration for happy CLI
+ * Global configuration for dora CLI
  * 
  * Centralizes all configuration including environment variables and paths
  * Environment files should be loaded using Node's --env-file flag
@@ -30,7 +30,7 @@ class Configuration {
   constructor() {
     // Server configuration - priority: parameter > environment > default
     this.serverUrl = process.env.HAPPY_SERVER_URL || 'https://api.cluster-fluster.com'
-    this.webappUrl = process.env.HAPPY_WEBAPP_URL || 'https://app.happy.engineering'
+    this.webappUrl = process.env.HAPPY_WEBAPP_URL || 'https://app.dora.engineering'
 
     // Check if we're running as daemon based on process args
     const args = process.argv.slice(2)
@@ -42,7 +42,7 @@ class Configuration {
       const expandedPath = process.env.HAPPY_HOME_DIR.replace(/^~/, homedir())
       this.happyHomeDir = expandedPath
     } else {
-      this.happyHomeDir = join(homedir(), '.happy')
+      this.happyHomeDir = join(homedir(), '.dora')
     }
 
     this.logsDir = join(this.happyHomeDir, 'logs')

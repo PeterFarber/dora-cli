@@ -41,8 +41,8 @@ export async function startDaemon(): Promise<void> {
   //
   // In case the setup malfunctions - our signal handlers will not properly
   // shut down. We will force exit the process with code 1.
-  let requestShutdown: (source: 'happy-app' | 'happy-cli' | 'os-signal' | 'exception', errorMessage?: string) => void;
-  let resolvesWhenShutdownRequested = new Promise<({ source: 'happy-app' | 'happy-cli' | 'os-signal' | 'exception', errorMessage?: string })>((resolve) => {
+  let requestShutdown: (source: 'dora-app' | 'dora-cli' | 'os-signal' | 'exception', errorMessage?: string) => void;
+  let resolvesWhenShutdownRequested = new Promise<({ source: 'dora-app' | 'dora-cli' | 'os-signal' | 'exception', errorMessage?: string })>((resolve) => {
     requestShutdown = (source, errorMessage) => {
       logger.debug(`[DAEMON RUN] Requesting shutdown (source: ${source}, errorMessage: ${errorMessage})`);
 
@@ -140,7 +140,7 @@ export async function startDaemon(): Promise<void> {
     // Helper functions
     const getCurrentChildren = () => Array.from(pidToTrackedSession.values());
 
-    // Handle webhook from happy session reporting itself
+    // Handle webhook from dora session reporting itself
     const onHappySessionWebhook = (sessionId: string, sessionMetadata: Metadata) => {
       logger.debugLargeJson(`[DAEMON RUN] Session reported`, sessionMetadata);
 
@@ -172,7 +172,7 @@ export async function startDaemon(): Promise<void> {
       } else if (!existingSession) {
         // New session started externally
         const trackedSession: TrackedSession = {
-          startedBy: 'happy directly - likely by user from terminal',
+          startedBy: 'dora directly - likely by user from terminal',
           happySessionId: sessionId,
           happySessionMetadataFromLocalWebhook: sessionMetadata,
           pid
@@ -259,7 +259,7 @@ export async function startDaemon(): Promise<void> {
         // Construct arguments for the CLI
         const args = [
           options.agent === 'claude' ? 'claude' : 'codex',
-          '--happy-starting-mode', 'remote',
+          '--dora-starting-mode', 'remote',
           '--started-by', 'daemon'
         ];
 
@@ -289,7 +289,7 @@ export async function startDaemon(): Promise<void> {
           logger.debug('[DAEMON RUN] Failed to spawn process - no PID returned');
           return {
             type: 'error',
-            errorMessage: 'Failed to spawn Happy process - no PID returned'
+            errorMessage: 'Failed to spawn Dora process - no PID returned'
           };
         }
 
@@ -402,7 +402,7 @@ export async function startDaemon(): Promise<void> {
       getChildren: getCurrentChildren,
       stopSession,
       spawnSession,
-      requestShutdown: () => requestShutdown('happy-cli'),
+      requestShutdown: () => requestShutdown('dora-cli'),
       onHappySessionWebhook
     });
 
@@ -443,7 +443,7 @@ export async function startDaemon(): Promise<void> {
     apiMachine.setRPCHandlers({
       spawnSession,
       stopSession,
-      requestShutdown: () => requestShutdown('happy-app')
+      requestShutdown: () => requestShutdown('dora-app')
     });
 
     // Connect to server
@@ -539,7 +539,7 @@ export async function startDaemon(): Promise<void> {
     }, heartbeatIntervalMs); // Every 60 seconds in production
 
     // Setup signal handlers
-    const cleanupAndShutdown = async (source: 'happy-app' | 'happy-cli' | 'os-signal' | 'exception', errorMessage?: string) => {
+    const cleanupAndShutdown = async (source: 'dora-app' | 'dora-cli' | 'os-signal' | 'exception', errorMessage?: string) => {
       logger.debug(`[DAEMON RUN] Starting proper cleanup (source: ${source}, errorMessage: ${errorMessage})...`);
 
       // Clear health check interval

@@ -38,7 +38,7 @@ export async function runClaude(credentials: Credentials, options: StartOptions 
     const sessionTag = randomUUID();
 
     // Log environment info at startup
-    logger.debugLargeJson('[START] Happy process started', getEnvironmentInfo());
+    logger.debugLargeJson('[START] Dora process started', getEnvironmentInfo());
     logger.debug(`[START] Options: startedBy=${options.startedBy}, startingMode=${options.startingMode}`);
 
     // Validate daemon spawn requirements
@@ -59,7 +59,7 @@ export async function runClaude(credentials: Credentials, options: StartOptions 
     const settings = await readSettings();
     let machineId = settings?.machineId
     if (!machineId) {
-        console.error(`[START] No machine ID found in settings, which is unexepcted since authAndSetupMachineIfNeeded should have created it. Please report this issue on https://github.com/slopus/happy-cli/issues`);
+        console.error(`[START] No machine ID found in settings, which is unexepcted since authAndSetupMachineIfNeeded should have created it. Please report this issue on https://github.com/slopus/dora-cli/issues`);
         process.exit(1);
     }
     logger.debug(`Using machineId: ${machineId}`);
@@ -123,9 +123,9 @@ export async function runClaude(credentials: Credentials, options: StartOptions 
     // Create realtime session
     const session = api.sessionSyncClient(response);
 
-    // Start Happy MCP server
+    // Start Dora MCP server
     const happyServer = await startHappyServer(session);
-    logger.debug(`[START] Happy MCP server started at ${happyServer.url}`);
+    logger.debug(`[START] Dora MCP server started at ${happyServer.url}`);
 
     // Print log file path
     const logPath = logger.logFilePath;
@@ -314,7 +314,7 @@ export async function runClaude(credentials: Credentials, options: StartOptions 
             // Stop caffeinate
             stopCaffeinate();
 
-            // Stop Happy MCP server
+            // Stop Dora MCP server
             happyServer.stop();
 
             logger.debug('[START] Cleanup complete, exiting');
@@ -362,7 +362,7 @@ export async function runClaude(credentials: Credentials, options: StartOptions 
             // Intentionally unused
         },
         mcpServers: {
-            'happy': {
+            'dora': {
                 type: 'http' as const,
                 url: happyServer.url,
             }
@@ -387,9 +387,9 @@ export async function runClaude(credentials: Credentials, options: StartOptions 
     stopCaffeinate();
     logger.debug('Stopped sleep prevention');
 
-    // Stop Happy MCP server
+    // Stop Dora MCP server
     happyServer.stop();
-    logger.debug('Stopped Happy MCP server');
+    logger.debug('Stopped Dora MCP server');
 
     // Exit
     process.exit(0);

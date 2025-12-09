@@ -9,7 +9,7 @@ import psList from 'ps-list';
 import spawn from 'cross-spawn';
 
 /**
- * Find all Happy CLI processes (including current process)
+ * Find all Dora CLI processes (including current process)
  */
 export async function findAllHappyProcesses(): Promise<Array<{ pid: number, command: string, type: string }>> {
   try {
@@ -20,12 +20,12 @@ export async function findAllHappyProcesses(): Promise<Array<{ pid: number, comm
       const cmd = proc.cmd || '';
       const name = proc.name || '';
       
-      // Check if it's a Happy process
-      const isHappy = name.includes('happy') || 
-                      name === 'node' && (cmd.includes('happy-cli') || cmd.includes('dist/index.mjs')) ||
-                      cmd.includes('happy.mjs') ||
-                      cmd.includes('happy-coder') ||
-                      (cmd.includes('tsx') && cmd.includes('src/index.ts') && cmd.includes('happy-cli'));
+      // Check if it's a Dora process
+      const isHappy = name.includes('dora') || 
+                      name === 'node' && (cmd.includes('dora-cli') || cmd.includes('dist/index.mjs')) ||
+                      cmd.includes('dora.mjs') ||
+                      cmd.includes('dora-coder') ||
+                      (cmd.includes('tsx') && cmd.includes('src/index.ts') && cmd.includes('dora-cli'));
       
       if (!isHappy) continue;
 
@@ -57,7 +57,7 @@ export async function findAllHappyProcesses(): Promise<Array<{ pid: number, comm
 }
 
 /**
- * Find all runaway Happy CLI processes that should be killed
+ * Find all runaway Dora CLI processes that should be killed
  */
 export async function findRunawayHappyProcesses(): Promise<Array<{ pid: number, command: string }>> {
   const allProcesses = await findAllHappyProcesses();
@@ -78,7 +78,7 @@ export async function findRunawayHappyProcesses(): Promise<Array<{ pid: number, 
 }
 
 /**
- * Kill all runaway Happy CLI processes
+ * Kill all runaway Dora CLI processes
  */
 export async function killRunawayHappyProcesses(): Promise<{ killed: number, errors: Array<{ pid: number, error: string }> }> {
   const runawayProcesses = await findRunawayHappyProcesses();

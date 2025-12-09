@@ -1,6 +1,6 @@
 /**
- * Happy MCP server
- * Provides Happy CLI specific tools including chat session title management
+ * Dora MCP server
+ * Provides Dora CLI specific tools including chat session title management
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -35,9 +35,9 @@ export async function startHappyServer(client: ApiSessionClient) {
     //
 
     const mcp = new McpServer({
-        name: "Happy MCP",
+        name: "Dora MCP",
         version: "1.0.0",
-        description: "Happy CLI MCP server with chat session management tools",
+        description: "Dora CLI MCP server with chat session management tools",
     });
 
     mcp.registerTool('change_title', {

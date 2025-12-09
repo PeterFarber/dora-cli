@@ -1,12 +1,12 @@
-# Happy CLI Codebase Overview
+# Dora CLI Codebase Overview
 
 ## Project Overview
 
-Happy CLI (`handy-cli`) is a command-line tool that wraps Claude Code to enable remote control and session sharing. It's part of a three-component system:
+Dora CLI (`handy-cli`) is a command-line tool that wraps Claude Code to enable remote control and session sharing. It's part of a three-component system:
 
 1. **handy-cli** (this project) - CLI wrapper for Claude Code
 2. **handy** - React Native mobile client
-3. **handy-server** - Node.js server with Prisma (hosted at https://api.happy-servers.com/)
+3. **handy-server** - Node.js server with Prisma (hosted at https://api.dora-servers.com/)
 
 ## Code Style Preferences
 
@@ -140,21 +140,21 @@ User interface components.
 
 ## Starting the Daemon
 ```bash
-# From the happy-cli directory:
-./bin/happy.mjs daemon start
+# From the dora-cli directory:
+./bin/dora.mjs daemon start
 
 # With custom server URL (for local development):
-HAPPY_SERVER_URL=http://localhost:3005 ./bin/happy.mjs daemon start
+HAPPY_SERVER_URL=http://localhost:3005 ./bin/dora.mjs daemon start
 
 # Stop the daemon:
-./bin/happy.mjs daemon stop
+./bin/dora.mjs daemon stop
 
 # Check daemon status:
-./bin/happy.mjs daemon status
+./bin/dora.mjs daemon status
 ```
 
 ## Daemon Logs
-- Daemon logs are stored in `~/.happy-dev/logs/` (or `$HAPPY_HOME_DIR/logs/`)
+- Daemon logs are stored in `~/.dora-dev/logs/` (or `$HAPPY_HOME_DIR/logs/`)
 - Named with format: `YYYY-MM-DD-HH-MM-SS-daemon.log`
 
 # Session Forking `claude` and sdk behavior

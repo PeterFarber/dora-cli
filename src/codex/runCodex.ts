@@ -86,7 +86,7 @@ export async function runCodex(opts: {
     const settings = await readSettings();
     let machineId = settings?.machineId;
     if (!machineId) {
-        console.error(`[START] No machine ID found in settings, which is unexpected since authAndSetupMachineIfNeeded should have created it. Please report this issue on https://github.com/slopus/happy-cli/issues`);
+        console.error(`[START] No machine ID found in settings, which is unexpected since authAndSetupMachineIfNeeded should have created it. Please report this issue on https://github.com/slopus/dora-cli/issues`);
         process.exit(1);
     }
     logger.debug(`Using machineId: ${machineId}`);
@@ -284,7 +284,7 @@ export async function runCodex(opts: {
             // Stop caffeinate
             stopCaffeinate();
 
-            // Stop Happy MCP server
+            // Stop Dora MCP server
             happyServer.stop();
 
             logger.debug('[Codex] Session termination complete, exiting');
@@ -533,11 +533,11 @@ export async function runCodex(opts: {
         }
     });
 
-    // Start Happy MCP server (HTTP) and prepare STDIO bridge config for Codex
+    // Start Dora MCP server (HTTP) and prepare STDIO bridge config for Codex
     const happyServer = await startHappyServer(session);
-    const bridgeCommand = join(projectPath(), 'bin', 'happy-mcp.mjs');
+    const bridgeCommand = join(projectPath(), 'bin', 'dora-mcp.mjs');
     const mcpServers = {
-        happy: {
+        dora: {
             command: bridgeCommand,
             args: ['--url', happyServer.url]
         }
@@ -740,7 +740,7 @@ export async function runCodex(opts: {
         logger.debug('[codex]: client.disconnect begin');
         await client.disconnect();
         logger.debug('[codex]: client.disconnect done');
-        // Stop Happy MCP server
+        // Stop Dora MCP server
         logger.debug('[codex]: happyServer.stop');
         happyServer.stop();
 
